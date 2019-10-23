@@ -104,7 +104,7 @@ class Puzzle:
             cls.puzzle = puzzle
             return cls(cls.row, cls.column)
 
-    def set_puzzle(self, puzzle):
+    def set_puzzle(self, puzzle_1_dimension):
         """
         Set puzzle with array argument which is 1-Dimension
 
