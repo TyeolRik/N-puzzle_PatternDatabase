@@ -41,7 +41,8 @@ def write_on_database(something_to_write, database_name = "Database.txt"):
 def generate_all_solvable_square_puzzles(row = 4, column = 4, cpu_core = 2):
     estimated_number_of_solvable_states = number_of_permutations(row * column) / 2
     ONE_PERCENT = int(estimated_number_of_solvable_states / 100) # the one percent of working
-    percent_iteration = 0.5
+    percent_iteration_rate = 1
+    percent_iteration = percent_iteration_rate
     print(estimated_number_of_solvable_states)
     count_permutations = 0
     number_array = [None] * (row * column)
@@ -51,10 +52,10 @@ def generate_all_solvable_square_puzzles(row = 4, column = 4, cpu_core = 2):
     _database_name = "All_Solvable_Puzzle_" + str(row) + "x" + str(column) + "_thread.txt"
     _write_things = ""
     write_time = 0
-
-    pool = multiprocessing.Pool(8)
+    # For multiprocessing
+    pool = multiprocessing.Pool(cpu_core)
     with open(_database_name, 'a') as database:
-        for possible_and_solvable_state in pool.imap_unordered(return_solvable, permutations(number_array), chunksize = 150):
+        for possible_and_solvable_state in pool.imap_unordered(return_solvable, permutations(number_array), chunksize = (500 * cpu_core)):
             start_time = time.time()
             if possible_and_solvable_state is not None:
                 database.write(possible_and_solvable_state + "\n")
@@ -62,7 +63,7 @@ def generate_all_solvable_square_puzzles(row = 4, column = 4, cpu_core = 2):
             write_time = write_time + (time.time() - start_time)
             if count_permutations == ONE_PERCENT * percent_iteration:
                 print(percent_iteration, "% is done")
-                percent_iteration = percent_iteration + 0.5
+                percent_iteration = percent_iteration + percent_iteration_rate
 
     print("Generating all solvable and possible permutations of puzzles!")
     print("The number of all Possible and Solvable puzzle is ", count_permutations)
@@ -70,7 +71,7 @@ def generate_all_solvable_square_puzzles(row = 4, column = 4, cpu_core = 2):
 
 if __name__=='__main__':
     start_time = time.time()
-    writing_time = generate_all_solvable_square_puzzles(4, 4, 4)
+    writing_time = generate_all_solvable_square_puzzles(3, 3, 4)
     print("Execution time: %s seconds" % (time.time() - start_time))
     print("Writing time: %s seconds" % writing_time)
     print("Calc time: %s seconds" % (time.time() - start_time - writing_time))
