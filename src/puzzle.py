@@ -61,11 +61,17 @@ def is_solvable(puzzle):
     What is an Inversion
         If we assume the tiles written out in a single row (1D Array) instead of being spread in N-rows (2D Array),
         a pair of tiles (a, b) form an inversion if a appears before b but a > b.
+
+    Args:
+        puzzle: 1-dimension or 2-dimension list. no 4
     Reference: https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
     """
     dimension = len(np.shape(puzzle))
     if dimension == 2:
         puzzle = sum(puzzle, [])
+    elif dimension >= 3:
+        print("Testing Puzzle's dimension is ", dimension, " >= 3. Please check puzzle data again.")
+        return False
     row = column = int(math.sqrt(len(puzzle)))
     number_of_inversions = get_number_of_inversions(puzzle) # Check Inversion
     # 1. If N is odd, then puzzle instance is solvable if number of inversions is even in the input state.
@@ -112,6 +118,22 @@ class Puzzle:
         Args:
             number_of_row: The Number of Row.
             number_of_column: The Number of Column.
+        Examples:
+            >>> # In this case, there is no real puzzle data
+            >>> test_puzzle = Puzzle(4, 4)
+            >>> test_puzzle = Puzzle(4, 4).with_square_number(16)
+
+            >>> # In this case, puzzle is in random state
+            >>> test_puzzle = Puzzle(4, 4)
+            >>> test_puzzle.set_puzzle_random()
+            >>> test_puzzle.pretty_print()
+            >>> Row: 4  Column: 4       Size: 16
+                ==========================
+                |  9  | 14  |  8  |  1  |
+                |  4  |  3  |  5  |  *  |
+                |  7  | 12  |  2  |  6  |
+                | 10  | 13  | 11  | 15  |
+                ==========================
         """
         self.row = number_of_row
         self.column = number_of_column
@@ -331,10 +353,6 @@ class Puzzle:
         print("=")
 
 
-test_puzzle = Puzzle(4, 4)
-test_puzzle.set_puzzle_random()
-test_puzzle.pretty_print()
-print(test_puzzle.is_solvable())
 """
 # Test Page
 test_puzzle_1 = [6,13,7,10,8,9,11,BLANK,15,2,12,5,14,3,1,4]
@@ -345,4 +363,8 @@ test_made = [BLANK, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 14]
 puzzle = Puzzle.with_puzzle(test_made)
 puzzle.pretty_print()
 print(puzzle.is_solvable())
+test_puzzle = Puzzle(4, 4)
+test_puzzle.set_puzzle_random()
+test_puzzle.pretty_print()
+print(test_puzzle.is_solvable())
 """
