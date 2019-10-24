@@ -1,3 +1,5 @@
-py{
-    "python.pythonPath": "C:\\Users\\TyeolRik\\Anaconda3\\envs\\python3.7.4\\python.exe"
+{
+    "python.pythonPath": "C:\\Users\\TyeolRik\\Anaconda3\\envs\\python3.7.4\\python.exe",
+    "python.jediEnabled": true,
+    "python.formatting.provider": "black"
 }
